@@ -10,10 +10,12 @@ class App extends Component {
       {id:'2', name: 'Alina', age: 26,
       content: 'Hobbies: sleep:)'},
       {id:'3', name: 'Thomas', age: 29}
-    ]
+    ],
+    showPersons: false
   };
 
   getPersons = () => {
+    if (!this.state.showPersons) return null;
     return this.state.persons.map((item,i)=>{
       return (<Person
         name={item.name}
@@ -26,7 +28,7 @@ class App extends Component {
   };
 
   incrementAgeHandler = (index) => {
-    let tempPersonsArray = this.state.persons.slice();
+    let tempPersonsArray = this.state.persons;
     tempPersonsArray[index].age++;
     this.setState({
       persons: tempPersonsArray
@@ -36,9 +38,13 @@ class App extends Component {
   changeNameHandler = (event,index) => {
     let tempPersonsArray = this.state.persons.slice();
     tempPersonsArray[index].name = event.target.value;
-    this.setState({persons: tempPersonsArray})
+    this.setState({persons: tempPersonsArray});
+    console.log('this.state', this.state);
   };
 
+  toolePersonsListHandler = () => {
+    this.setState({showPersons: !this.state.showPersons});
+  };
 
   render() {
     return (
@@ -50,8 +56,8 @@ class App extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
-        {this.getPersons()}
-        {/*{this.state.persons.map((item,i) => <Person age={item.age} key={i} name={item.name}/>)}*/}
+        <button onClick={this.toolePersonsListHandler}>Show list of Users</button>
+        <div>{this.getPersons()}</div>
       </div>
     );
     //return React.createElement('div', {className: "App"}, React.createElement('h1', {className: 'App-title'}, 'Welcome to React'));

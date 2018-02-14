@@ -8,4 +8,12 @@
     border: 1px solid lightgray;
     box-shadow: 1px 0 5px 0 gray;
     vertical-align: top;
+    position: relative;
+}
+.Person .red{
+    background-color: red;
+    color: white;
+    position: absolute;
+    top: 0;
+    right: 0;
 }

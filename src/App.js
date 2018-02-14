@@ -1,49 +1,56 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import Person from './Person/Person'
+import Persons from './components/Persons/Persons'
 
 class App extends Component {
-  state = {
-    persons: [
-      {id:'1', name: 'Oleh', age: 29},
-      {id:'2', name: 'Alina', age: 26,
-      content: 'Hobbies: sleep:)'},
-      {id:'3', name: 'Thomas', age: 29}
-    ],
-    showPersons: false
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      persons: [
+        {id:'1', name: 'Oleh', age: 29},
+        {id:'2', name: 'Alina', age: 26,
+          content: 'Hobbies: sleep:)'},
+        {id:'3', name: 'Thomas', age: 29}
+      ],
+      showPersons: false
+    };
+  }
 
   getPersons = () => {
-    if (!this.state.showPersons) return null;
-    return this.state.persons.map((item,i)=>{
-      return (<Person
-        name={item.name}
-        age={item.age}
-        key={item.id}
-        dataId={item.id}
-        change={(event)=>this.changeNameHandler(event,i)}
-        inc={()=>this.incrementAgeHandler(i)}>{item.content || ''}</Person>);
-    });
+    return <Persons
+      persons = {this.state.persons}
+      toggleEvent = {this.toggleListHandler}
+      showState = {this.state.showPersons}
+      inputChangeEvent = {this.changeNameHandler}
+      btnClickEvent = {this.incrementAgeHandler}
+      removeElement = {this.removeElementHandler}/>;
   };
 
-  incrementAgeHandler = (index) => {
-    let tempPersonsArray = this.state.persons;
-    tempPersonsArray[index].age++;
+  getPersonIndexById = (id) => this.state.persons.findIndex((item)=>item.id === id);
+
+  incrementAgeHandler = (id) => {
+    let tempPersonsArray = [...this.state.persons];
+    tempPersonsArray[this.getPersonIndexById(id)].age++;
     this.setState({
       persons: tempPersonsArray
     })
   };
 
-  changeNameHandler = (event,index) => {
+  changeNameHandler = (event,id) => {
     let tempPersonsArray = this.state.persons.slice();
-    tempPersonsArray[index].name = event.target.value;
+    tempPersonsArray[this.getPersonIndexById(id)].name = event.target.value;
     this.setState({persons: tempPersonsArray});
-    console.log('this.state', this.state);
   };
 
-  toolePersonsListHandler = () => {
+  toggleListHandler = () => {
     this.setState({showPersons: !this.state.showPersons});
+  };
+
+  removeElementHandler = (id) => {
+    let tempPersons = [...this.state.persons];
+    tempPersons.splice(this.getPersonIndexById(id),1);
+    this.setState({persons: tempPersons});
   };
 
   render() {
@@ -53,11 +60,7 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-        <button onClick={this.toolePersonsListHandler}>Show list of Users</button>
-        <div>{this.getPersons()}</div>
+        {this.getPersons()}
       </div>
     );
     //return React.createElement('div', {className: "App"}, React.createElement('h1', {className: 'App-title'}, 'Welcome to React'));

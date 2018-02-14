@@ -4,7 +4,7 @@ import './Person.css';
 const person = (props) => {
     function additionalInfo() {
         if(props.children){
-            return <p>{props.children}</p>
+            return <i>{props.children}</i>
         }
     }
     return (
@@ -13,10 +13,11 @@ const person = (props) => {
               <b style={{'color':'red'}}>{props.age}</b> years old</p>
           {additionalInfo()}
           <div>
-          <label htmlFor={props.dataId}>Change name: </label>
-          <input type="text" id={props.dataId} value={props.name} onChange={props.change}/>
-          <button onClick={props.inc}>Increment Age</button>
+            <label htmlFor={props.dataId}>Change name: </label>
+            <input type="text" id={props.dataId} value={props.name} onChange={props.change}/>
+            <p><button onClick={props.inc}>Increment Age</button></p>
           </div>
+        <button className="red" onClick={props.removeEvent}>X</button>
       </div>
 
     );
